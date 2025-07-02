@@ -1,10 +1,10 @@
--- Retail Sales Analysis SQL Project (MySQL Version)
+-- 📊 Retail Sales Analysis SQL Project (MySQL Version)
 
--- Project Title: Retail Sales Analysis
--- Level: Beginner
--- Database: p1_retail_db
+-- 🏷️ Project Title: Retail Sales Analysis
+-- 🧑‍💻 Level: Beginner
+-- 🗃️ Database: p1_retail_db
 
--- 1. Database Setup
+-- 🏗️ 1. Database Setup
 CREATE DATABASE p1_retail_db;
 
 USE p1_retail_db;
@@ -23,40 +23,45 @@ CREATE TABLE retail_sales (
     total_sale FLOAT
 );
 
--- 2. Data Exploration & Cleaning
+-- 🔍 2. Data Exploration & Cleaning
+-- 📌 Total number of records
 SELECT COUNT(*) FROM retail_sales;
 
+-- 📌 Total number of unique customers
 SELECT COUNT(DISTINCT customer_id) FROM retail_sales;
 
+-- 📌 List of unique product categories
 SELECT DISTINCT category FROM retail_sales;
 
+-- 📌 Check for NULL/missing values
 SELECT * FROM retail_sales
 WHERE 
     sale_date IS NULL OR sale_time IS NULL OR customer_id IS NULL OR 
     gender IS NULL OR age IS NULL OR category IS NULL OR 
     quantity IS NULL OR price_per_unit IS NULL OR cogs IS NULL;
 
+-- 🧹 Remove records with NULL values
 DELETE FROM retail_sales
 WHERE 
     sale_date IS NULL OR sale_time IS NULL OR customer_id IS NULL OR 
     gender IS NULL OR age IS NULL OR category IS NULL OR 
     quantity IS NULL OR price_per_unit IS NULL OR cogs IS NULL;
 
--- 3. Data Analysis & Findings
+-- 📈 3. Data Analysis & Business Insights
 
--- 1. Sales on '2022-11-05'
+-- 1️⃣ Sales made on '2022-11-05'
 SELECT *
 FROM retail_sales
 WHERE sale_date = '2022-11-05';
 
--- 2. 'Clothing' sales > 4 in Nov-2022
+-- 2️⃣ Clothing sales (> 4 units) in November 2022
 SELECT *
 FROM retail_sales
 WHERE category = 'Clothing'
   AND DATE_FORMAT(sale_date, '%Y-%m') = '2022-11'
   AND quantity > 4;
 
--- 3. Total sales for each category
+-- 3️⃣ Total sales and order count per category
 SELECT 
     category,
     SUM(total_sale) AS net_sale,
@@ -64,18 +69,18 @@ SELECT
 FROM retail_sales
 GROUP BY category;
 
--- 4. Average age of 'Beauty' category customers
+-- 4️⃣ Average age of customers who purchased Beauty products
 SELECT 
     ROUND(AVG(age), 2) AS avg_age
 FROM retail_sales
 WHERE category = 'Beauty';
 
--- 5. Transactions with total_sale > 1000
+-- 5️⃣ Transactions with high value (total_sale > 1000)
 SELECT *
 FROM retail_sales
 WHERE total_sale > 1000;
 
--- 6. Transactions by gender and category
+-- 6️⃣ Number of transactions by gender and category
 SELECT 
     category,
     gender,
@@ -84,7 +89,7 @@ FROM retail_sales
 GROUP BY category, gender
 ORDER BY category;
 
--- 7. Best selling month in each year
+-- 7️⃣ Best-selling month (highest avg_sale) in each year
 SELECT 
     year,
     month,
@@ -100,7 +105,7 @@ FROM (
 ) AS ranked
 WHERE rnk = 1;
 
--- 8. Top 5 customers by total sales
+-- 8️⃣ Top 5 customers by total sales
 SELECT 
     customer_id,
     SUM(total_sale) AS total_sales
@@ -109,14 +114,14 @@ GROUP BY customer_id
 ORDER BY total_sales DESC
 LIMIT 5;
 
--- 9. Unique customers per category
+-- 9️⃣ Unique customer count per product category
 SELECT 
     category,
     COUNT(DISTINCT customer_id) AS cnt_unique_cs
 FROM retail_sales
 GROUP BY category;
 
--- 10. Orders by time shift (Morning, Afternoon, Evening)
+-- 🔟 Total number of orders by time of day (shift)
 WITH hourly_sales AS (
     SELECT *,
         CASE
